@@ -1,10 +1,5 @@
 #!/bin/sh
-
-echo "Setting up your Mac..."
-
-echo "[INFO] Installing Oh My Zsh...";
-curl -L http://install.ohmyz.sh | sh
-
+ 
 installBrew() {
   if hash brew 2>/dev/null; then
     echo "[INFO] Brew already installed."
@@ -49,20 +44,25 @@ installAsdf() {
 }
 
 createRepoDirectory(){
-  echo "making home repo directory"
+  echo "[INFO] Making Home `~/repos` Directory"
   # This is a default directory for macOS user accounts but doesn't comes pre-installed
   mkdir "$HOME/repos"
 }
 
 createZshLink(){
-  echo "linking up zshrc"
+  echo "[INFO] Linking up zshrc"
   # Removes .zshrc from $HOME (if it exists) and symlinks the .zshrc file from the .dotfiles
   rm -rf $HOME/.zshrc
   ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
 }
 
+installOhMyZsh() {
+  echo "[INFO] Installing Oh My Zsh...";
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+}
+
 installDotFiles(){
-  echo "installing dotfiles"
+  echo "[INFO] Installing .dotfiles"
   installBrew;
   updateBrew;
   installBrewDeps;
@@ -70,7 +70,7 @@ installDotFiles(){
   createRepoDirectory;
   createZshLink;
 
-  echo "reload shell"
+  echo "[INFO] Reloading shell"
   # Set macOS preferences
   # We will run this last because this will reload the shell
   source .macos
