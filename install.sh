@@ -75,3 +75,17 @@ installDotFiles(){
   # We will run this last because this will reload the shell
   source .macos
 }
+
+
+if [ "$1" == "--force" -o "$1" == "-f" ]; then
+  installDotFiles;
+else
+  read -p "I'm about to change the configuration files placed in your home directory. Do you want to continue? (y/n) " -n 1;
+  echo "";
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    installDotFiles;
+  fi;
+fi;
+
+echo "";
+echo "[INFO] If there isn't any error message, the process is completed.";
