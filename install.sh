@@ -23,6 +23,7 @@ installBrewDeps() {
   echo "[INFO] Installing Brew dependencies...";
   # Install all our dependencies with bundle (See Brewfile)
   brew tap homebrew/bundle
+  brew tab homebrew/cask-versions
   brew bundle
 }
 
@@ -31,9 +32,9 @@ installAsdf() {
   echo "[INFO] Cloning asdf repository...";
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf;
 
-  echo '. $HOME/.asdf/asdf.sh' >> ~/.bashrc
-  echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
-  source ~/.bashrc
+  echo '. $HOME/.asdf/asdf.sh' >> ~/.zprofile
+  echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.zprofile
+  source ~/.zprofile
 
   # Install useful plugins (at least for me :D)
   echo "[INFO] Installing asdf plugins...";
@@ -61,19 +62,24 @@ installOhMyZsh() {
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
+copyFinickyConfig() {
+  echo "[INFO] Copying finicky config...";
+  cp $HOME/.dotfiles/.finicky $HOME/.finicky
+}
+
 installDotFiles(){
   echo "[INFO] Installing .dotfiles"
+  createZshLink;
   installBrew;
   updateBrew;
   installBrewDeps;
   installAsdf;
   createRepoDirectory;
-  createZshLink;
 
   echo "[INFO] Reloading shell"
   # Set macOS preferences
   # We will run this last because this will reload the shell
-  source .macos
+  source .zshrc
 }
 
 
