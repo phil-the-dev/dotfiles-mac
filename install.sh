@@ -75,6 +75,7 @@ installDotFiles(){
   installBrewDeps;
   installAsdf;
   createRepoDirectory;
+  copyFinickyConfig;
 
   echo "[INFO] Reloading shell"
   # Set macOS preferences
