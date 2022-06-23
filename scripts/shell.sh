@@ -31,18 +31,27 @@ export PATH="\$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/
 EOF
 }
 
+installFonts(){
+  info "Installing fonts...";
+  info "Copying JetBrains Mono Regular font for VS Code...";
+  cp ./fonts/JetBrainsMono-Regular.ttf $HOME/Library/Fonts
+  info "Copying Meslo for Powerline font for OhMyZsh theme...";
+  cp "./fonts/Meslo LG S DZ Regular for Powerline.ttf" $HOME/Library/Fonts
+}
+
 installAllShellSetup() {
   createRepoDirectory;
   createZshLink;
   installOhMyZsh;
   copyFinickyConfig;
   setupCodeAlias;
+  installFonts;
 }
 
 mainMenuShell() {
   echo "Shell Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything" "Create Repo Directory" "Create .zshrc symlink" "Install Oh My Zsh", "Copy Finicky Config", "Setup code alias", "Return to main menu")
+  options=("Install Everything" "Create Repo Directory" "Create .zshrc symlink" "Install Oh My Zsh", "Copy Finicky Config", "Setup code alias", "Install Fonts" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in 
@@ -65,11 +74,15 @@ mainMenuShell() {
         setupCodeAlias;
       ;;
       ${options[6]})
+        installFonts;
+      ;;
+      ${options[7]})
         echo "Returning to main menu...";
         break 2;
       ;;
       *) echo "Invalid option";;
     esac
+    break;
   done
 }
 
