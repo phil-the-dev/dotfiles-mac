@@ -1,5 +1,22 @@
 #!/bin/sh
 
+clone_or_pull() {
+    local repo_path="${1}"
+    local project="$(echo "${repo_path}" | cut -d"/" -f2)"
+    local project_path="${project}"
+
+    if cd "${project_path}" > /dev/null 2>&1; then
+        info "Updating ${repo_path}..."
+        git pull
+        echo
+        cd - > /dev/null 2>&1
+    else
+        info "Installing ${repo_path}..."
+        git clone "https://github.com/${repo_path}"
+        echo
+    fi
+}
+
 createRepoDirectory(){
   info "Making Home `~/Repos` Directory"
   # This is a default directory for macOS user accounts but doesn't comes pre-installed
@@ -16,6 +33,11 @@ createZshLink(){
 installOhMyZsh() {
   info "Installing Oh My Zsh...";
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+}
+
+installZshPlugins() {
+  info "Installing Zsh Plugins...";
+  clone_or_pull "zsh-users/zsh-syntax-highlighting"
 }
 
 copyFinickyConfig() {
@@ -43,6 +65,7 @@ installAllShellSetup() {
   createRepoDirectory;
   createZshLink;
   installOhMyZsh;
+  installZshPlugins;
   copyFinickyConfig;
   setupCodeAlias;
   installFonts;
@@ -51,7 +74,7 @@ installAllShellSetup() {
 mainMenuShell() {
   echo "Shell Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything" "Create Repo Directory" "Create .zshrc symlink" "Install Oh My Zsh", "Copy Finicky Config", "Setup code alias", "Install Fonts" "Return to main menu")
+  options=("Install Everything" "Create Repo Directory" "Create .zshrc symlink" "Install Oh My Zsh" "Install Zsh Plugins/Themes" "Copy Finicky Config" "Setup code alias" "Install Fonts" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in 
@@ -68,15 +91,18 @@ mainMenuShell() {
         installOhMyZsh;
       ;;
       ${options[4]})
-        copyFinickyConfig;
+        installZshPlugins;
       ;;
       ${options[5]})
-        setupCodeAlias;
+        copyFinickyConfig;
       ;;
       ${options[6]})
-        installFonts;
+        setupCodeAlias;
       ;;
       ${options[7]})
+        installFonts;
+      ;;
+      ${options[8]})
         echo "Returning to main menu...";
         break 2;
       ;;
