@@ -1,0 +1,17 @@
+tap 'homebrew/bundle'
+tap 'homebrew/cask'
+tap 'homebrew/core'
+tap 'homebrew/services'
+tap 'romkatv/powerlevel10k'
+brew 'asdf' # Asdf is a tool for managing the version of software you use.
+brew 'hub' # GitHub CLI
+brew 'powerlevel10k' # A Zsh theme
+brew 'yarn' # Yarn is a package manager for Node.js
+brew 'zsh' # Zsh is a shell
+cask 'docker' # Docker is a tool for building and managing containers
+cask 'fork' # Fork is a tool for managing your forks on GitHub
+cask 'fig' # Fig is "Intellisense" for the command line
+cask 'figma' # Figma is a tool for creating and editing designs
+cask 'iterm2' # iTerm2 is a terminal emulator
+cask 'raycast' # Raycast is a Spotlight/Alfred replacement
+cask 'visual-studio-code' # Visual Studio Code is a code editor

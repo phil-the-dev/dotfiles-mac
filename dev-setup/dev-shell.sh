@@ -1,33 +1,8 @@
 #!/bin/sh
 
-clone_or_pull() {
-    local repo_path="${1}"
-    local project="$(echo "${repo_path}" | cut -d"/" -f2)"
-    local project_path="${project}"
-
-    if cd "${project_path}" > /dev/null 2>&1; then
-        info "Updating ${repo_path}..."
-        git pull
-        echo
-        cd - > /dev/null 2>&1
-    else
-        info "Installing ${repo_path}..."
-        git clone "https://github.com/${repo_path}"
-        echo
-    fi
-}
-
 createRepoDirectory(){
   info "Making Home `~/Repos` Directory"
-  # This is a default directory for macOS user accounts but doesn't comes pre-installed
   mkdir "$HOME/Repos"
-}
-
-createZshLink(){
-  info "Linking up zshrc"
-  # Removes .zshrc from $HOME (if it exists) and symlinks the .zshrc file from the .dotfiles
-  rm -rf $HOME/.zshrc
-  ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
 }
 
 installOhMyZsh() {
@@ -38,11 +13,6 @@ installOhMyZsh() {
 installZshPlugins() {
   info "Installing Zsh Plugins...";
   clone_or_pull "zsh-users/zsh-syntax-highlighting"
-}
-
-copyFinickyConfig() {
-  info "Copying finicky config...";
-  cp $HOME/.dotfiles/.finicky.js $HOME/.finicky.js
 }
 
 setupCodeAlias(){
@@ -61,31 +31,34 @@ installFonts(){
   cp "./fonts/Meslo LG S DZ Regular for Powerline.ttf" $HOME/Library/Fonts
 }
 
-installAllShellSetup() {
+installDevBrewDeps() {
+  installBrewDeps "./dev-setup/Brewfile";
+}
+
+installAllDevShellSetup() {
   createRepoDirectory;
-  createZshLink;
+  installDevBrewDeps;
   installOhMyZsh;
   installZshPlugins;
-  copyFinickyConfig;
   setupCodeAlias;
   installFonts;
 }
 
-mainMenuShell() {
+mainMenuDevShell() {
   echo "Shell Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything" "Create Repo Directory" "Create .zshrc symlink" "Install Oh My Zsh" "Install Zsh Plugins/Themes" "Copy Finicky Config" "Setup code alias" "Install Fonts" "Return to main menu")
+  options=("Install Everything" "Create Repo Directory" "Install Dev Homebrew dependencies" "Install Oh My Zsh" "Install Zsh Plugins/Themes" "Setup code alias" "Install Fonts" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in 
       ${options[0]})
-        installAllShellSetup;
+        installAllDevShellSetup;
       ;;
       ${options[1]})
         createRepoDirectory;
       ;;
       ${options[2]})
-        createZshLink;
+        installDevBrewDeps;
       ;;
       ${options[3]})
         installOhMyZsh;
@@ -94,15 +67,12 @@ mainMenuShell() {
         installZshPlugins;
       ;;
       ${options[5]})
-        copyFinickyConfig;
-      ;;
-      ${options[6]})
         setupCodeAlias;
       ;;
-      ${options[7]})
+      ${options[6]})
         installFonts;
       ;;
-      ${options[8]})
+      ${options[7]})
         echo "Returning to main menu...";
         break 2;
       ;;
@@ -112,8 +82,8 @@ mainMenuShell() {
   done
 }
 
-mainShell() {
+mainDevShell() {
   while true; do
-    mainMenuShell;
+    mainMenuDevShell;
   done
 }

@@ -1,0 +1,18 @@
+tap 'homebrew/bundle'
+tap 'homebrew/cask'
+tap 'homebrew/core'
+tap 'homebrew/services'
+tap 'jakehilborn/jakehilborn'
+brew 'jq' # JSON processor
+brew 'mas' # Mac App Store CLI
+brew 'displayplacer' # DisplayPlacer is used to reset monitor positions
+cask 'bartender' # Bartender is a menu bar application for OS X
+cask 'discord' # Discord is a chat application for PC
+cask 'finicky' # Finicky is used to redirect links to different browsers (I use Firefox, but Meet doesn't work well, so I redirect to chrome)
+cask 'firefox-developer-edition' # Firefox Developer Edition is a browser
+cask 'mimestream' # MimeStream is a email client that works well with Gmail
+cask 'rectangle' # Rectangle allows you to position windows on your screen (like if you want it to take up 50% of the screen)
+cask 'slack' # Slack is a chat application for PC
+cask 'spotify' # Spotify is a music player
+cask 'switchreesx' # SwitchResX is a better display resolution tool
+mas '1Password', id: 1_333_542_190  # 1Password is a password manager
