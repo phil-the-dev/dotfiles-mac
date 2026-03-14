@@ -2,9 +2,9 @@
 set -e
 
 # Source shared utilities
-source ./shared/utils/logging.sh
-source ./shared/utils/helpers.sh
-source ./shared/shell-setup.sh
+. ./shared/utils/logging.sh
+. ./shared/utils/helpers.sh
+. ./shared/shell-setup.sh
 
 # Detect operating system
 detectOS() {
@@ -55,11 +55,11 @@ confirmOS() {
 
   # Source platform-specific scripts
   if [ "$DETECTED_OS" = "macos" ]; then
-    source ./macos/homebrew.sh
-    source ./macos/macos-setup.sh
+    . ./macos/homebrew.sh
+    . ./macos/macos-setup.sh
   elif [ "$DETECTED_OS" = "linux" ]; then
-    source ./linux/packages.sh
-    source ./linux/linux-setup.sh
+    . ./linux/packages.sh
+    . ./linux/linux-setup.sh
   fi
 }
 
