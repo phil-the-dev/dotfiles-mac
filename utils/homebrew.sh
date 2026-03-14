@@ -26,7 +26,7 @@ installBrewDeps() {
     info "Installing Homebrew dependencies...";
     # Install all our dependencies with bundle (See Brewfile)
     brew tap homebrew/bundle
-    brew tab homebrew/cask-versions
+    brew tap homebrew/cask-versions
     brew bundle "--file=${1}"
   else 
     error "Skipping installing Homebrew dependencies. Homebrew is not installed."

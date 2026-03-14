@@ -16,16 +16,24 @@ installMainBrewDeps() {
   installBrewDeps "./main-setup/Brewfile";
 }
 
+createClaudeLink() {
+  info "Linking up CLAUDE.md"
+  mkdir -p $HOME/.claude
+  rm -rf $HOME/.claude/CLAUDE.md
+  ln -s $HOME/.dotfiles/CLAUDE.md $HOME/.claude/CLAUDE.md
+}
+
 installAllMainShellSetup() {
   installMainBrewDeps;
   createZshLink;
   copyFinickyConfig;
+  createClaudeLink;
 }
 
 mainMenuShell() {
   echo "Shell Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything" "Install Main Homebrew dependencies" "Create .zshrc symlink" "Copy Finicky Config" "Return to main menu")
+  options=("Install Everything" "Install Main Homebrew dependencies" "Create .zshrc symlink" "Copy Finicky Config" "Create CLAUDE.md symlink" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in 
@@ -42,6 +50,9 @@ mainMenuShell() {
         copyFinickyConfig;
       ;;
       ${options[4]})
+        createClaudeLink;
+      ;;
+      ${options[5]})
         echo "Returning to main menu...";
         break 2;
       ;;

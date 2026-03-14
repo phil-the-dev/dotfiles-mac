@@ -1,4 +1,4 @@
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time)
@@ -8,6 +8,10 @@ plugins=(
   docker
   zsh-syntax-highlighting
 )
+
+# Source custom function files
+source $HOME/.dotfiles/docker-functions.sh
+source $HOME/.dotfiles/zsh-functions.sh
 
 # Changed your .gitignore _after_ you have added / committed some files?
 # run `gri` to untrack anything in your updated .gitignore

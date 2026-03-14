@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 source ./utils/logging.sh
 source ./utils/homebrew.sh
