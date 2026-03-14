@@ -42,12 +42,15 @@ Dev:
 - asdf: This is a tool that can manage versions of languages/frameworks. I use it to replace `nvm` and `rvm`.
 - hub: Github's CLI tool, not sure I use this much, but good to have.
 - powerlevel10k: this is a zsh theme. It's neat and I like it, requires the font "Meslo LG L DZ for Powerlevel10k" to be installed. (It's included in `dev-setup/fonts` and there's a menu option to install all the fonts in the script.)
-- yarn: This is a node package manager. I don't use it personally, but some projects I come across still use it.
 - zsh: This is my default shell. I install it via homebrew, but I _think_ macOS has this by default now.
 - docker: Allows me to run docker containers. I also like the Docker Desktop to manage my docker containers. (not much of a terminal user)
 - fork: A Git application when I can't use VS Code's git integration reliably. Mostly used for reverting, cherry picking, amending commits, and viewing the log/history.
-- fig: Intellisense for the terminal, it's great!
+- warp: A modern terminal with AI-powered features. Replaces Fig, which was shut down.
 - figma: This is a design tool. I don't use it much, but the designers at work use it, so I use it to view more than designing.
 - iterm2: A better terminal app that Terminal.
 - raycast: a Spotlight/Alfred replacement. I have a configuration file also in this repo to import after installation.
 - VS Code: This is my main editor of choice. I use it for all my coding.
+
+## Dockerfile
+
+The `Dockerfile` in the root of this repo is a work in progress. It is intended for testing the dotfiles installation in an isolated Ubuntu environment to verify that the setup scripts run correctly without affecting your host machine.

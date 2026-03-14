@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/settings.json
+
+# Node
+node_modules/
+
+# Misc
+*.log
+.Trash-*
