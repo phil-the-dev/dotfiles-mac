@@ -1,42 +1,122 @@
 #!/bin/sh
 set -e
 
-source ./utils/logging.sh
-source ./utils/homebrew.sh
-source ./utils/helpers.sh
+# Source shared utilities
+source ./shared/utils/logging.sh
+source ./shared/utils/helpers.sh
+source ./shared/shell-setup.sh
 
-source ./main-setup/main-shell.sh
-source ./dev-setup/asdf.sh
-source ./dev-setup/dev-shell.sh
-
-installAll(){
-  installAllHomebrew;
-  installAllAsdf;
-  installAllMainShellSetup;
-  installAllDevShellSetup;
+# Detect operating system
+detectOS() {
+  case "$(uname -s)" in
+    Darwin) DETECTED_OS="macos" ;;
+    Linux)  DETECTED_OS="linux" ;;
+    *)      DETECTED_OS="unknown" ;;
+  esac
 }
 
-mainMenu() {
-  echo "Phil's .dotfile Menu";
-  echo "What would you like to do?";
-  options=("Homebrew Menu" "asdf Menu" "Main Shell Setup Menu" "Dev Shell Setup Menu" "Install Everything" "Exit")
+# Prompt user to confirm or change detected OS
+confirmOS() {
+  detectOS
+
+  if [ "$DETECTED_OS" = "macos" ]; then
+    echo "🍎 Detected: macOS"
+  elif [ "$DETECTED_OS" = "linux" ]; then
+    echo "🐧 Detected: Linux"
+  else
+    echo "❓ Could not detect your operating system."
+  fi
+
+  echo ""
+  echo "Is this correct?"
+  options=("Yes, continue" "Switch to macOS" "Switch to Linux" "Exit")
   select opt in "${options[@]}"
   do
-    case $opt in 
+    case $opt in
       ${options[0]})
-        mainHomebrew;
         break;
       ;;
       ${options[1]})
-        mainAsdf;
+        DETECTED_OS="macos"
+        echo "Switched to macOS."
         break;
       ;;
       ${options[2]})
-        mainShell;
+        DETECTED_OS="linux"
+        echo "Switched to Linux."
         break;
       ;;
       ${options[3]})
-        mainDevShell;
+        exit 0;
+      ;;
+      *) echo "Invalid option";;
+    esac
+  done
+
+  # Source platform-specific scripts
+  if [ "$DETECTED_OS" = "macos" ]; then
+    source ./macos/homebrew.sh
+    source ./macos/macos-setup.sh
+  elif [ "$DETECTED_OS" = "linux" ]; then
+    source ./linux/packages.sh
+    source ./linux/linux-setup.sh
+  fi
+}
+
+# Install everything for the detected platform
+installAll(){
+  installAllSharedSetup;
+  installAllAsdf;
+  if [ "$DETECTED_OS" = "macos" ]; then
+    installAllMacSetup;
+  elif [ "$DETECTED_OS" = "linux" ]; then
+    installAllLinuxSetup;
+  fi
+}
+
+mainMenu() {
+  echo ""
+  echo "Phil's .dotfile Menu";
+
+  if [ "$DETECTED_OS" = "macos" ]; then
+    echo "Platform: macOS 🍎";
+  else
+    echo "Platform: Linux 🐧";
+  fi
+
+  echo "What would you like to do?";
+
+  if [ "$DETECTED_OS" = "macos" ]; then
+    options=("Shared Setup Menu" "macOS Setup Menu" "Homebrew Menu" "asdf Menu" "Install Everything" "Exit")
+  else
+    options=("Shared Setup Menu" "Linux Setup Menu" "Package Manager Menu" "asdf Menu" "Install Everything" "Exit")
+  fi
+
+  select opt in "${options[@]}"
+  do
+    case $opt in
+      ${options[0]})
+        mainShared;
+        break;
+      ;;
+      ${options[1]})
+        if [ "$DETECTED_OS" = "macos" ]; then
+          mainMac;
+        else
+          mainLinux;
+        fi
+        break;
+      ;;
+      ${options[2]})
+        if [ "$DETECTED_OS" = "macos" ]; then
+          mainHomebrew;
+        else
+          mainPackages;
+        fi
+        break;
+      ;;
+      ${options[3]})
+        mainAsdf;
         break;
       ;;
       ${options[4]})
@@ -44,7 +124,7 @@ mainMenu() {
         break;
       ;;
       ${options[5]})
-        exit 1;
+        exit 0;
       ;;
       *) echo "Invalid option";;
     esac
@@ -52,6 +132,7 @@ mainMenu() {
 }
 
 main() {
+  confirmOS;
   while true; do
     mainMenu;
   done

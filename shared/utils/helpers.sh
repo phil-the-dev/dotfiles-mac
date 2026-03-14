@@ -12,7 +12,7 @@ clone_or_pull() {
         cd - > /dev/null 2>&1
     else
         info "Installing ${repo_path}..."
-        git clone "https://github.com/${repo_path}" 
+        git clone "https://github.com/${repo_path}"
         echo
     fi
 }

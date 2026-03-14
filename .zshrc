@@ -10,8 +10,8 @@ plugins=(
 )
 
 # Source custom function files
-source $HOME/.dotfiles/docker-functions.sh
-source $HOME/.dotfiles/zsh-functions.sh
+source $HOME/.dotfiles/shared/docker-functions.sh
+source $HOME/.dotfiles/shared/zsh-functions.sh
 
 # Changed your .gitignore _after_ you have added / committed some files?
 # run `gri` to untrack anything in your updated .gitignore

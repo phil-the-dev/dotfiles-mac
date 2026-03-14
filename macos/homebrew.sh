@@ -14,7 +14,6 @@ installBrew() {
     else
       echo "not sure what shell is in use, placing it in \`~/.bash_profile\`"
       echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.bash_profile
-      # assume something else
     fi
 
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -24,11 +23,10 @@ installBrew() {
 installBrewDeps() {
   if checkHomebrew; then
     info "Installing Homebrew dependencies...";
-    # Install all our dependencies with bundle (See Brewfile)
     brew tap homebrew/bundle
     brew tap homebrew/cask-versions
     brew bundle "--file=${1}"
-  else 
+  else
     error "Skipping installing Homebrew dependencies. Homebrew is not installed."
   fi
 }
@@ -41,8 +39,8 @@ updateBrew() {
 }
 
 installAllBrewDeps() {
-  installBrewDeps "../main-setup/Brewfile";
-  installBrewDeps "../dev-setup/Brewfile";
+  installBrewDeps "./macos/main/Brewfile";
+  installBrewDeps "./macos/dev/Brewfile";
 }
 
 installAllHomebrew() {
@@ -74,7 +72,7 @@ mainMenuHomebrew() {
   options=("Install all homebrew (homebrew and dependencies)" "Install just homebrew (no dependencies)" "Install all homebrew dependencies" "Install homebrew main (non-dev) dependencies" "Install homebrew dev (non-main) dependencies" "Return to main menu")
   select opt in "${options[@]}"
   do
-    case $opt in 
+    case $opt in
       ${options[0]})
         installAllHomebrew
       ;;
@@ -88,11 +86,11 @@ mainMenuHomebrew() {
       ;;
       ${options[3]})
         updateBrew;
-        installBrewDeps "../main-setup/Brewfile";
+        installBrewDeps "./macos/main/Brewfile";
       ;;
       ${options[4]})
         updateBrew;
-        installBrewDeps "../dev-setup/Brewfile";
+        installBrewDeps "./macos/dev/Brewfile";
       ;;
       ${options[5]})
         echo "Returning to main menu...";
@@ -102,7 +100,6 @@ mainMenuHomebrew() {
     esac
   done
 }
-
 
 mainHomebrew(){
   while true; do
