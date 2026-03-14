@@ -9,7 +9,6 @@ brew 'powerlevel10k' # A Zsh theme
 brew 'zsh' # Zsh is a shell
 cask 'docker' # Docker is a tool for building and managing containers
 cask 'fork' # Fork is a tool for managing your forks on GitHub
-cask 'warp' # Warp is a modern terminal with AI features
 cask 'figma' # Figma is a tool for creating and editing designs
 cask 'iterm2' # iTerm2 is a terminal emulator
 cask 'raycast' # Raycast is a Spotlight/Alfred replacement
