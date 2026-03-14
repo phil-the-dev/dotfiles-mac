@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 copyFinickyConfig() {
   info "Copying finicky config...";

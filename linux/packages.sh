@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Detect the Linux package manager
 detectPackageManager() {

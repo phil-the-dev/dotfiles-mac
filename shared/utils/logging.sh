@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 info() {
   echo "[🔵 INFO]: $@"

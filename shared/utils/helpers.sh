@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 clone_or_pull() {
     local repo_path="${1}"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 createZshLink(){
   info "Linking up zshrc"

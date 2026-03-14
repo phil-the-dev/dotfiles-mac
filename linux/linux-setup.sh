@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 setupCodeAliasLinux(){
   info "Setting up code alias (Linux)"
