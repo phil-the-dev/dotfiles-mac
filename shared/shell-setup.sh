@@ -2,15 +2,15 @@
 
 createZshLink(){
   info "Linking up zshrc"
-  rm -rf $HOME/.zshrc
-  ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
+  rm -rf "$HOME/.zshrc"
+  ln -s "$HOME/.dotfiles/.zshrc" "$HOME/.zshrc"
 }
 
 createClaudeLink() {
   info "Linking up CLAUDE.md"
-  mkdir -p $HOME/.claude
-  rm -rf $HOME/.claude/CLAUDE.md
-  ln -s $HOME/.dotfiles/CLAUDE.md $HOME/.claude/CLAUDE.md
+  mkdir -p "$HOME/.claude"
+  rm -rf "$HOME/.claude/CLAUDE.md"
+  ln -s "$HOME/.dotfiles/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 }
 
 createRepoDirectory(){
@@ -19,21 +19,36 @@ createRepoDirectory(){
 }
 
 installOhMyZsh() {
+  if [ -d "$HOME/.oh-my-zsh" ]; then
+    info "Oh My Zsh already installed."
+    return 0
+  fi
   info "Installing Oh My Zsh...";
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
 installZshPlugins() {
   info "Installing Zsh Plugins...";
-  clone_or_pull "zsh-users/zsh-syntax-highlighting"
+  local plugin_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+  clone_or_pull "zsh-users/zsh-syntax-highlighting" "$plugin_dir"
 }
 
 installAsdf() {
   info "Installing asdf...";
+  local zshrc="${ZDOTDIR:-$HOME}/.zshrc"
   if hash brew 2>/dev/null; then
-    echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
+    local asdf_line=". $(brew --prefix asdf)/libexec/asdf.sh"
+    if ! grep -qF "asdf.sh" "$zshrc" 2>/dev/null; then
+      echo -e "\n${asdf_line}" >> "$zshrc"
+    else
+      info "asdf already configured in .zshrc"
+    fi
   elif [ -f "$HOME/.asdf/asdf.sh" ]; then
-    echo -e "\n. $HOME/.asdf/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
+    if ! grep -qF "asdf.sh" "$zshrc" 2>/dev/null; then
+      echo -e "\n. $HOME/.asdf/asdf.sh" >> "$zshrc"
+    else
+      info "asdf already configured in .zshrc"
+    fi
   else
     info "asdf not found. Install it first via your package manager."
   fi

@@ -1,3 +1,4 @@
+alias dc='docker compose'
 
 dc:reboot() { dc down && dc up -d $@ }
 dc:rebuild() { dc:reboot --build }

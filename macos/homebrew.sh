@@ -23,8 +23,6 @@ installBrew() {
 installBrewDeps() {
   if checkHomebrew; then
     info "Installing Homebrew dependencies...";
-    brew tap homebrew/bundle
-    brew tap homebrew/cask-versions
     brew bundle "--file=${1}"
   else
     error "Skipping installing Homebrew dependencies. Homebrew is not installed."
@@ -39,8 +37,8 @@ updateBrew() {
 }
 
 installAllBrewDeps() {
-  installBrewDeps "./macos/main/Brewfile";
-  installBrewDeps "./macos/dev/Brewfile";
+  installBrewDeps "$SCRIPT_DIR/macos/main/Brewfile";
+  installBrewDeps "$SCRIPT_DIR/macos/dev/Brewfile";
 }
 
 installAllHomebrew() {
@@ -86,11 +84,11 @@ mainMenuHomebrew() {
       ;;
       ${options[3]})
         updateBrew;
-        installBrewDeps "./macos/main/Brewfile";
+        installBrewDeps "$SCRIPT_DIR/macos/main/Brewfile";
       ;;
       ${options[4]})
         updateBrew;
-        installBrewDeps "./macos/dev/Brewfile";
+        installBrewDeps "$SCRIPT_DIR/macos/dev/Brewfile";
       ;;
       ${options[5]})
         echo "Returning to main menu...";
