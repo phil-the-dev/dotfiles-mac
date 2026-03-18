@@ -78,17 +78,17 @@ installDevPackages() {
   case $PKG_MANAGER in
     apt)
       installPackage docker.io docker-compose
-      sudo usermod -aG docker $USER
+      sudo usermod -aG docker "$USER"
       ;;
     dnf)
       installPackage docker docker-compose
       sudo systemctl enable docker
-      sudo usermod -aG docker $USER
+      sudo usermod -aG docker "$USER"
       ;;
     pacman)
       installPackage docker docker-compose
       sudo systemctl enable docker
-      sudo usermod -aG docker $USER
+      sudo usermod -aG docker "$USER"
       ;;
   esac
 

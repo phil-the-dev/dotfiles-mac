@@ -14,7 +14,7 @@ installFontsLinux(){
   local font_dir="$HOME/.local/share/fonts"
   mkdir -p "$font_dir"
   info "Copying JetBrains Mono Regular font for VS Code...";
-  cp $HOME/.dotfiles/shared/fonts/JetBrainsMono-Regular.ttf "$font_dir/"
+  cp "$HOME/.dotfiles/shared/fonts/JetBrainsMono-Regular.ttf" "$font_dir/"
   info "Copying Meslo for Powerline font for OhMyZsh theme...";
   cp "$HOME/.dotfiles/shared/fonts/Meslo LG S DZ Regular for Powerline.ttf" "$font_dir/"
   info "Refreshing font cache...";

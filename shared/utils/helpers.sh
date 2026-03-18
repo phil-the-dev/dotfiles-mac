@@ -2,17 +2,19 @@
 
 clone_or_pull() {
     local repo_path="${1}"
+    local target_dir="${2}"
     local project="$(echo "${repo_path}" | cut -d"/" -f2)"
-    local project_path="${project}"
 
-    if cd "${project_path}" > /dev/null 2>&1; then
+    # Default to current directory if no target specified
+    local project_path="${target_dir:-$project}"
+
+    if [ -d "${project_path}" ]; then
         info "Updating ${repo_path}..."
-        git pull
+        git -C "${project_path}" pull
         echo
-        cd - > /dev/null 2>&1
     else
         info "Installing ${repo_path}..."
-        git clone "https://github.com/${repo_path}"
+        git clone "https://github.com/${repo_path}" "${project_path}"
         echo
     fi
 }

@@ -1,10 +1,29 @@
 #!/bin/bash
-set -e
+
+# Ensure the repo is accessible at ~/.dotfiles
+DOTFILES_DIR="$HOME/.dotfiles"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+if [ "$SCRIPT_DIR" != "$DOTFILES_DIR" ]; then
+  if [ -e "$DOTFILES_DIR" ]; then
+    if [ -L "$DOTFILES_DIR" ]; then
+      echo "~/.dotfiles symlink already exists, but points to $(readlink "$DOTFILES_DIR") instead of $SCRIPT_DIR"
+      echo "Remove it and re-run, or clone this repo directly to ~/.dotfiles"
+      exit 1
+    else
+      echo "~/.dotfiles already exists and is not this repo."
+      echo "Move or remove it, then re-run."
+      exit 1
+    fi
+  fi
+  echo "Symlinking $SCRIPT_DIR -> ~/.dotfiles"
+  ln -s "$SCRIPT_DIR" "$DOTFILES_DIR"
+fi
 
 # Source shared utilities
-. ./shared/utils/logging.sh
-. ./shared/utils/helpers.sh
-. ./shared/shell-setup.sh
+. "$SCRIPT_DIR/shared/utils/logging.sh"
+. "$SCRIPT_DIR/shared/utils/helpers.sh"
+. "$SCRIPT_DIR/shared/shell-setup.sh"
 
 # Detect operating system
 detectOS() {
@@ -55,11 +74,11 @@ confirmOS() {
 
   # Source platform-specific scripts
   if [ "$DETECTED_OS" = "macos" ]; then
-    . ./macos/homebrew.sh
-    . ./macos/macos-setup.sh
+    . "$SCRIPT_DIR/macos/homebrew.sh"
+    . "$SCRIPT_DIR/macos/macos-setup.sh"
   elif [ "$DETECTED_OS" = "linux" ]; then
-    . ./linux/packages.sh
-    . ./linux/linux-setup.sh
+    . "$SCRIPT_DIR/linux/packages.sh"
+    . "$SCRIPT_DIR/linux/linux-setup.sh"
   fi
 }
 
