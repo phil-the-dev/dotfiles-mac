@@ -2,55 +2,86 @@
 
 These are my dotfiles to help me keep my development environment replicable when moving machines.
 
-I've separated most of the scripts into 2 main groups: Dev and Main
+## Supported Platforms
 
-Dev group contains scripts that are used to setup my development environment. Anything that helps my coding environment should be located here. _(examples: VS Code, OhMyZsh, Repo Directory, etc.)_
+- **macOS** (primary) — uses Homebrew for package management
+- **Linux** (Ubuntu/Debian, Fedora, Arch) — uses apt, dnf, or pacman
 
-Main group contains scripts that are used to setup my main environment. Anything that helps my daily life should be located here. _(examples: Firefox, Slack, etc.)_
+## Directory Structure
 
-Homebrew is used to install most things.
+```
+shared/          # Cross-platform: shell config, utilities, fonts
+  utils/         # Logging and helper functions
+  fonts/         # TTF fonts (JetBrains Mono, Meslo Powerline)
+  shell-setup.sh # Zsh links, Oh My Zsh, plugins, asdf, CLAUDE.md
+
+macos/           # macOS-specific setup
+  homebrew.sh    # Homebrew install and management
+  macos-setup.sh # Finicky, fonts (~/Library/Fonts), VS Code alias
+  main/Brewfile  # Main apps (Discord, Slack, Firefox, etc.)
+  dev/Brewfile   # Dev tools (Docker, VS Code, iTerm2, etc.)
+
+linux/           # Linux-specific setup
+  packages.sh    # apt/dnf/pacman package installation
+  linux-setup.sh # Fonts (~/.local/share/fonts), VS Code, powerlevel10k
+```
+
+Scripts are organized into **Shared**, **Main**, and **Dev** groups:
+
+- **Shared** — cross-platform shell setup: .zshrc symlink, Oh My Zsh, zsh plugins, asdf, CLAUDE.md symlink, repo directory creation.
+- **Main** — daily-use apps (Firefox, Slack, Discord, Spotify, etc.)
+- **Dev** — development tools (Docker, VS Code, terminal emulators, fonts, etc.)
 
 ## Requirements
 
-- macOS
 - zsh as your default shell
+- macOS or a supported Linux distro (Ubuntu/Debian, Fedora, or Arch)
 
 ## Setup
 
-In the command line run `./install.sh`. Everything should be menu based afterwards.
+```bash
+./install.sh
+```
 
-I've already run `chmod +x ./install.sh` in this repository, so that _shouldn't_ need to happen, but if you run into issues running the script, try that first.
+The script will detect your OS (with a chance to override) and present a menu for installing everything or individual components.
 
 ## What's Included (and why)
 
-Main:
+### Shared (both platforms)
 
-- DisplayPlacer: Whenever I re-dock my laptop sometimes my displays are not setup like it was previously, this allows me to quickly re-setup my displays via command line aliases.
-- Bartender: I super dislike how cluttered the system icons by the clock can be, this lets me hide ones I don't need to see all day.
-- Discord: Chatting with friends and keeping up with certain communities.
-- Finicky: This is a small app that allows me to redirect clicked links in Slack to a browser of my choice. Google Meet doesn't work well in Firefox, so this lets me open it in Chrome instead.
-- Firefox: The main reason I like firefox is that I can have Session Tabs, so I can be logged in to the same site with different test accounts within the same window.
-- Mimestream: An email client that supports Gmail super well, feels the closest I'll get to a desktop gmail application.
-- Rectangle: This is a window management tool that lets me easily move and resize my windows. (i.e. 50% of the screen, 1/3 of the screen, etc.)
-- Slack: This is how I chat with people at work. Will probably remove once I no longer need to chat with people at work.
-- Spotify: This is my music player.
-- SwitchResX: This is a better mac display app, allows me to chose custom resolutions for my displays.
+- Oh My Zsh: Zsh configuration framework
+- powerlevel10k: Zsh theme. Requires the "Meslo LG S DZ for Powerline" font (included in `shared/fonts/`)
+- asdf: Version manager for Ruby, Node.js, etc. Replaces `nvm` and `rvm`
+- zsh-syntax-highlighting: Syntax highlighting in the terminal
+- Docker functions: Helper aliases for docker-compose workflows
 
-Dev:
+### macOS-only
 
-- Oh My Zsh: This is my zsh configuration tool. I use this to setup my zsh environment.
-- asdf: This is a tool that can manage versions of languages/frameworks. I use it to replace `nvm` and `rvm`.
-- hub: Github's CLI tool, not sure I use this much, but good to have.
-- powerlevel10k: this is a zsh theme. It's neat and I like it, requires the font "Meslo LG L DZ for Powerlevel10k" to be installed. (It's included in `dev-setup/fonts` and there's a menu option to install all the fonts in the script.)
-- zsh: This is my default shell. I install it via homebrew, but I _think_ macOS has this by default now.
-- docker: Allows me to run docker containers. I also like the Docker Desktop to manage my docker containers. (not much of a terminal user)
-- fork: A Git application when I can't use VS Code's git integration reliably. Mostly used for reverting, cherry picking, amending commits, and viewing the log/history.
-- warp: A modern terminal with AI-powered features. Replaces Fig, which was shut down.
-- figma: This is a design tool. I don't use it much, but the designers at work use it, so I use it to view more than designing.
-- iterm2: A better terminal app that Terminal.
-- raycast: a Spotlight/Alfred replacement. I have a configuration file also in this repo to import after installation.
-- VS Code: This is my main editor of choice. I use it for all my coding.
+- DisplayPlacer: Re-setup display positions via command line aliases
+- Bartender: Hide cluttered menu bar icons
+- Discord, Slack, Spotify: Chat and music
+- Finicky: Redirect clicked links to specific browsers (e.g., Google Meet to Chrome)
+- Firefox Developer Edition: Session tabs for multi-account testing
+- Mimestream: Gmail desktop client
+- Rectangle: Window management (50%, 1/3, etc.)
+- SwitchResX: Custom display resolutions
+- hub: GitHub CLI
+- docker: Docker Desktop for Mac
+- fork: Git GUI for reverting, cherry-picking, history
+- warp: Modern terminal with AI features
+- figma: Design tool
+- iterm2: Terminal emulator
+- raycast: Spotlight/Alfred replacement
+- VS Code: Code editor
+
+### Linux-only
+
+- Packages installed via apt/dnf/pacman depending on distro
+- Docker via native packages (docker.io / docker)
+- VS Code via snap or manual install
+- Fonts installed to `~/.local/share/fonts`
+- powerlevel10k cloned from GitHub (instead of Homebrew)
 
 ## Dockerfile
 
-The `Dockerfile` in the root of this repo is a work in progress. It is intended for testing the dotfiles installation in an isolated Ubuntu environment to verify that the setup scripts run correctly without affecting your host machine.
+The `Dockerfile` in the root is a work in progress for testing the Linux installation path in an isolated Ubuntu container. Since `install.sh` is interactive, the Dockerfile sets up dependencies but doesn't run the full installer automatically.
