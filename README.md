@@ -10,21 +10,34 @@ These are my dotfiles to help me keep my development environment replicable when
 ## Directory Structure
 
 ```
-shared/          # Cross-platform: shell config, utilities, fonts
-  utils/         # Logging and helper functions
-  fonts/         # TTF fonts (JetBrains Mono, Meslo Powerline)
-  shell-setup.sh # Zsh links, Oh My Zsh, plugins, asdf, CLAUDE.md
+.zshrc                 # Slim entry point: loads OMZ + sources shared/shell/*.zsh
 
-macos/           # macOS-specific setup
-  homebrew.sh    # Homebrew install and management
-  macos-setup.sh # Finicky, fonts (~/Library/Fonts), VS Code alias
-  main/Brewfile  # Main apps (Discord, Slack, Firefox, etc.)
-  dev/Brewfile   # Dev tools (Docker, VS Code, iTerm2, etc.)
+shared/                # Cross-platform
+  shell/               # Sourced from .zshrc in order:
+    exports.zsh        #   PATH and env vars
+    aliases.zsh        #   Shell aliases
+    functions.zsh      #   Shell functions
+    tools.zsh          #   Third-party tool init (starship, asdf, bun, etc.)
+  config/              # Tool configs symlinked into ~/.config/
+    starship.toml
+  utils/               # Logging and helper functions
+  fonts/               # TTF fonts (JetBrains Mono, Meslo Powerline)
+  shell-setup.sh       # Zsh + starship + CLAUDE.md symlinks, OMZ, plugins
 
-linux/           # Linux-specific setup
-  packages.sh    # apt/dnf/pacman package installation
-  linux-setup.sh # Fonts (~/.local/share/fonts), VS Code, powerlevel10k
+macos/                 # macOS-specific setup
+  homebrew.sh          # Homebrew install and management
+  macos-setup.sh       # Finicky, fonts (~/Library/Fonts), VS Code alias
+  main/Brewfile        # Main apps (Discord, Slack, Firefox, etc.)
+  dev/Brewfile         # Dev tools (Docker, VS Code, iTerm2, starship, etc.)
+
+linux/                 # Linux-specific setup
+  packages.sh          # apt/dnf/pacman package installation
+  linux-setup.sh       # Fonts (~/.local/share/fonts), VS Code, starship
 ```
+
+### Machine-local overrides
+
+`.zshrc` sources `~/.zshrc.local` at the end if it exists. Put machine-specific or private config (work-only helpers, per-machine secrets, etc.) there — it is outside the repo and never tracked.
 
 Scripts are organized into **Shared**, **Main**, and **Dev** groups:
 
@@ -50,10 +63,10 @@ The script will detect your OS (with a chance to override) and present a menu fo
 ### Shared (both platforms)
 
 - Oh My Zsh: Zsh configuration framework
-- powerlevel10k: Zsh theme. Requires the "Meslo LG S DZ for Powerline" font (included in `shared/fonts/`)
+- starship: Minimal, fast, cross-shell prompt. Config lives at `shared/config/starship.toml` and is symlinked to `~/.config/starship.toml`
 - asdf: Version manager for Ruby, Node.js, etc. Replaces `nvm` and `rvm`
-- zsh-syntax-highlighting: Syntax highlighting in the terminal
-- Docker functions: Helper aliases for docker-compose workflows
+- zsh-autosuggestions: Fish-style command suggestions in the terminal
+- Docker functions: Helper aliases for docker-compose workflows (in `shared/shell/functions.zsh`)
 
 ### macOS-only
 
@@ -80,7 +93,7 @@ The script will detect your OS (with a chance to override) and present a menu fo
 - Docker via native packages (docker.io / docker)
 - VS Code via snap or manual install
 - Fonts installed to `~/.local/share/fonts`
-- powerlevel10k cloned from GitHub (instead of Homebrew)
+- starship installed via the official installer (`curl -sS https://starship.rs/install.sh | sh`)
 
 ## Dockerfile
 

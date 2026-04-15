@@ -21,13 +21,12 @@ installFontsLinux(){
   fc-cache -fv
 }
 
-installPowerlevel10kLinux() {
-  info "Installing powerlevel10k..."
-  local p10k_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-  if [ -d "$p10k_dir" ]; then
-    info "powerlevel10k already installed."
+installStarshipLinux() {
+  info "Installing starship..."
+  if hash starship 2>/dev/null; then
+    info "starship already installed."
   else
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$p10k_dir"
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
   fi
 }
 
@@ -35,13 +34,13 @@ installAllLinuxSetup() {
   installAllLinuxPackages;
   setupCodeAliasLinux;
   installFontsLinux;
-  installPowerlevel10kLinux;
+  installStarshipLinux;
 }
 
 mainMenuLinux() {
   echo "Linux Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything (Linux)" "Package Manager Menu" "Setup code alias" "Install Fonts" "Install powerlevel10k" "Return to main menu")
+  options=("Install Everything (Linux)" "Package Manager Menu" "Setup code alias" "Install Fonts" "Install starship" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in
@@ -59,7 +58,7 @@ mainMenuLinux() {
         installFontsLinux;
       ;;
       ${options[4]})
-        installPowerlevel10kLinux;
+        installStarshipLinux;
       ;;
       ${options[5]})
         echo "Returning to main menu...";
