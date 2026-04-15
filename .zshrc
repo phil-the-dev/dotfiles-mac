@@ -1,26 +1,17 @@
-# Path to Oh My Zsh installation
+# Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
-
-# Theme
-ZSH_THEME="powerlevel10k/powerlevel10k"
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time)
-
-# Plugins
 plugins=(
   git
   docker
-  zsh-syntax-highlighting
+  zsh-autosuggestions
 )
-
-# Load Oh My Zsh
 source "$ZSH/oh-my-zsh.sh"
 
-# Source custom function files
-source "$HOME/.dotfiles/shared/docker-functions.sh"
-source "$HOME/.dotfiles/shared/zsh-functions.sh"
+# Dotfiles shell config
+DOTFILES="$HOME/.dotfiles"
+for f in "$DOTFILES"/shared/shell/{exports,aliases,functions,tools}.zsh; do
+  [ -r "$f" ] && source "$f"
+done
 
-# Changed your .gitignore _after_ you have added / committed some files?
-# run `gri` to untrack anything in your updated .gitignore
-alias gri="git ls-files --ignored --exclude-standard | xargs git rm -r"
+# Machine-local overrides (not tracked)
+[ -r "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"

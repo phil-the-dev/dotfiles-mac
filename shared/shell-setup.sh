@@ -13,6 +13,13 @@ createClaudeLink() {
   ln -s "$HOME/.dotfiles/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 }
 
+createStarshipLink() {
+  info "Linking starship config"
+  mkdir -p "$HOME/.config"
+  rm -f "$HOME/.config/starship.toml"
+  ln -s "$HOME/.dotfiles/shared/config/starship.toml" "$HOME/.config/starship.toml"
+}
+
 createRepoDirectory(){
   info "Making Home ~/Repos Directory"
   mkdir -p "$HOME/Repos"
@@ -29,8 +36,8 @@ installOhMyZsh() {
 
 installZshPlugins() {
   info "Installing Zsh Plugins...";
-  local plugin_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-  clone_or_pull "zsh-users/zsh-syntax-highlighting" "$plugin_dir"
+  local plugin_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+  clone_or_pull "zsh-users/zsh-autosuggestions" "$plugin_dir"
 }
 
 installAsdf() {
@@ -68,6 +75,7 @@ installAllAsdf() {
 installAllSharedSetup() {
   createZshLink;
   createClaudeLink;
+  createStarshipLink;
   createRepoDirectory;
   installOhMyZsh;
   installZshPlugins;
@@ -107,7 +115,7 @@ mainAsdf() {
 mainMenuShared() {
   echo "Shared Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything (shared)" "Create .zshrc symlink" "Create CLAUDE.md symlink" "Create Repo Directory" "Install Oh My Zsh" "Install Zsh Plugins" "Return to main menu")
+  options=("Install Everything (shared)" "Create .zshrc symlink" "Create CLAUDE.md symlink" "Link starship config" "Create Repo Directory" "Install Oh My Zsh" "Install Zsh Plugins" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in
@@ -121,15 +129,18 @@ mainMenuShared() {
         createClaudeLink;
       ;;
       ${options[3]})
-        createRepoDirectory;
+        createStarshipLink;
       ;;
       ${options[4]})
-        installOhMyZsh;
+        createRepoDirectory;
       ;;
       ${options[5]})
-        installZshPlugins;
+        installOhMyZsh;
       ;;
       ${options[6]})
+        installZshPlugins;
+      ;;
+      ${options[7]})
         echo "Returning to main menu...";
         break 2;
       ;;
