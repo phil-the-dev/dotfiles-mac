@@ -7,10 +7,12 @@ createZshLink(){
 }
 
 createClaudeLink() {
-  info "Linking up CLAUDE.md"
+  info "Linking up Claude config"
   mkdir -p "$HOME/.claude"
   rm -rf "$HOME/.claude/CLAUDE.md"
-  ln -s "$HOME/.dotfiles/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+  ln -s "$HOME/.dotfiles/shared/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+  rm -rf "$HOME/.claude/settings.json"
+  ln -s "$HOME/.dotfiles/shared/claude/settings.json" "$HOME/.claude/settings.json"
 }
 
 createStarshipLink() {
@@ -115,7 +117,7 @@ mainAsdf() {
 mainMenuShared() {
   echo "Shared Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything (shared)" "Create .zshrc symlink" "Create CLAUDE.md symlink" "Link starship config" "Create Repo Directory" "Install Oh My Zsh" "Install Zsh Plugins" "Return to main menu")
+  options=("Install Everything (shared)" "Create .zshrc symlink" "Link Claude config" "Link starship config" "Create Repo Directory" "Install Oh My Zsh" "Install Zsh Plugins" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in
