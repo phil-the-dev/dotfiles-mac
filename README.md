@@ -17,9 +17,10 @@ shared/                # Cross-platform
     exports.zsh        #   PATH and env vars
     aliases.zsh        #   Shell aliases
     functions.zsh      #   Shell functions
-    tools.zsh          #   Third-party tool init (starship, asdf, bun, etc.)
+    tools.zsh          #   Third-party tool init (mise, starship, bun, etc.)
   config/              # Tool configs symlinked into ~/.config/
     starship.toml
+    mise.toml          #   Global tool versions -> ~/.config/mise/config.toml
   utils/               # Logging and helper functions
   fonts/               # TTF fonts (JetBrains Mono, Meslo Powerline)
   shell-setup.sh       # Zsh + starship + CLAUDE.md symlinks, OMZ, plugins
@@ -41,7 +42,7 @@ linux/                 # Linux-specific setup
 
 Scripts are organized into **Shared**, **Main**, and **Dev** groups:
 
-- **Shared** — cross-platform shell setup: .zshrc symlink, Oh My Zsh, zsh plugins, asdf, CLAUDE.md symlink, repo directory creation.
+- **Shared** — cross-platform shell setup: .zshrc symlink, Oh My Zsh, zsh plugins, mise, CLAUDE.md symlink, repo directory creation.
 - **Main** — daily-use apps (Firefox, Slack, Discord, Spotify, etc.)
 - **Dev** — development tools (Docker, VS Code, terminal emulators, fonts, etc.)
 
@@ -64,7 +65,7 @@ The script will detect your OS (with a chance to override) and present a menu fo
 
 - Oh My Zsh: Zsh configuration framework
 - starship: Minimal, fast, cross-shell prompt. Config lives at `shared/config/starship.toml` and is symlinked to `~/.config/starship.toml`
-- asdf: Version manager for Ruby, Node.js, etc. Replaces `nvm` and `rvm`
+- mise: Version manager for Ruby, Node.js, etc. Replaces `asdf`, `nvm`, and `rvm`. Global versions live in `shared/config/mise.toml`, symlinked to `~/.config/mise/config.toml`; per-project versions belong in that project's own `mise.toml`
 - zsh-autosuggestions: Fish-style command suggestions in the terminal
 - Docker functions: Helper aliases for docker-compose workflows (in `shared/shell/functions.zsh`)
 

@@ -1,4 +1,4 @@
-brew 'asdf' # Asdf is a tool for managing the version of software you use.
+brew 'mise' # mise manages the versions of the languages and tools you use.
 brew 'gh' # GitHub CLI
 brew 'starship' # Minimal, fast, cross-shell prompt
 brew 'zsh' # Zsh is a shell

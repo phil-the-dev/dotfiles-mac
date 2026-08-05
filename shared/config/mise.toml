@@ -1,0 +1,5 @@
+# Global tool versions. Symlinked to ~/.config/mise/config.toml by shell-setup.sh.
+# Per-project versions belong in that project's mise.toml, not here.
+[tools]
+node = "lts"
+ruby = "3.4.1"

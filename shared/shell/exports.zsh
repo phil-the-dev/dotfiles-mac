@@ -4,9 +4,6 @@ typeset -U path PATH
 # PostgreSQL 16
 [ -d /opt/homebrew/opt/postgresql@16/bin ] && export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
-# asdf shims
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
 # ~/.local/bin (Hermes Agent, q). Here rather than .zprofile so non-login
 # interactive shells get it too.
 export PATH="$HOME/.local/bin:$PATH"
