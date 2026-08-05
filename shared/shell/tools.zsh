@@ -13,6 +13,3 @@ command -v starship >/dev/null && eval "$(starship init zsh)"
 
 # VS Code shell integration (only inside VS Code terminal)
 [[ "$TERM_PROGRAM" == "vscode" ]] && command -v code >/dev/null && . "$(code --locate-shell-integration-path zsh)"
-
-# Fig export
-[ -r "$HOME/fig-export/dotfiles/dotfile.zsh" ] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
