@@ -3,3 +3,5 @@
 [tools]
 node = "lts"
 ruby = "3.4.1"
+# npm replacement. Must stay active globally: shims/npm execs `aube` by name.
+aube = "1.37.0"
