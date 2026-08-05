@@ -42,36 +42,46 @@ installZshPlugins() {
   clone_or_pull "zsh-users/zsh-autosuggestions" "$plugin_dir"
 }
 
-installAsdf() {
-  info "Installing asdf...";
-  local zshrc="${ZDOTDIR:-$HOME}/.zshrc"
-  if hash brew 2>/dev/null; then
-    local asdf_line=". $(brew --prefix asdf)/libexec/asdf.sh"
-    if ! grep -qF "asdf.sh" "$zshrc" 2>/dev/null; then
-      echo -e "\n${asdf_line}" >> "$zshrc"
-    else
-      info "asdf already configured in .zshrc"
-    fi
-  elif [ -f "$HOME/.asdf/asdf.sh" ]; then
-    if ! grep -qF "asdf.sh" "$zshrc" 2>/dev/null; then
-      echo -e "\n. $HOME/.asdf/asdf.sh" >> "$zshrc"
-    else
-      info "asdf already configured in .zshrc"
-    fi
-  else
-    info "asdf not found. Install it first via your package manager."
+createMiseLink() {
+  info "Linking mise config"
+  mkdir -p "$HOME/.config/mise"
+  rm -f "$HOME/.config/mise/config.toml"
+  ln -s "$HOME/.dotfiles/shared/config/mise.toml" "$HOME/.config/mise/config.toml"
+
+  # A leftover asdf-style ~/.tool-versions outranks the global config, so back it up.
+  if [ -f "$HOME/.tool-versions" ]; then
+    info "Backing up ~/.tool-versions -> ~/.tool-versions.bak (it would shadow mise.toml)"
+    mv "$HOME/.tool-versions" "$HOME/.tool-versions.bak"
   fi
 }
 
-installAsdfPlugins() {
-  info "Installing asdf plugins..."
-  asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git;
-  asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git;
+# Shell activation lives in shared/shell/tools.zsh, so there is no .zshrc to patch.
+installMise() {
+  if hash mise 2>/dev/null; then
+    info "mise already installed."
+    return 0
+  fi
+  info "Installing mise...";
+  if hash brew 2>/dev/null; then
+    brew install mise
+  else
+    curl -fsSL https://mise.run | sh
+  fi
 }
 
-installAllAsdf() {
-  installAsdf;
-  installAsdfPlugins;
+installMiseTools() {
+  if ! hash mise 2>/dev/null; then
+    error "mise not found. Install it first."
+    return 1
+  fi
+  info "Installing global mise tools..."
+  mise install
+}
+
+installAllMise() {
+  installMise;
+  createMiseLink;
+  installMiseTools;
 }
 
 installAllSharedSetup() {
@@ -83,23 +93,26 @@ installAllSharedSetup() {
   installZshPlugins;
 }
 
-mainMenuAsdf() {
-  echo "asdf Menu";
+mainMenuMise() {
+  echo "mise Menu";
   echo "What would you like to do?";
-  options=("Install everything asdf" "Install just asdf" "Install just asdf plugins" "Return to main menu")
+  options=("Install everything mise" "Install just mise" "Link mise config" "Install global tools" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in
       ${options[0]})
-        installAllAsdf;
+        installAllMise;
       ;;
       ${options[1]})
-        installAsdf;
+        installMise;
       ;;
       ${options[2]})
-        installAsdfPlugins;
+        createMiseLink;
       ;;
       ${options[3]})
+        installMiseTools;
+      ;;
+      ${options[4]})
         echo "Returning to main menu...";
         break 2;
       ;;
@@ -108,9 +121,9 @@ mainMenuAsdf() {
   done
 }
 
-mainAsdf() {
+mainMise() {
   while true; do
-    mainMenuAsdf;
+    mainMenuMise;
   done
 }
 

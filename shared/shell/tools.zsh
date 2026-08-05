@@ -1,9 +1,5 @@
-# asdf (macOS via Homebrew, or Linux via ~/.asdf)
-if [ -r /opt/homebrew/opt/asdf/libexec/asdf.sh ]; then
-  . /opt/homebrew/opt/asdf/libexec/asdf.sh
-elif [ -r "$HOME/.asdf/asdf.sh" ]; then
-  . "$HOME/.asdf/asdf.sh"
-fi
+# mise (version manager — manages PATH itself, no shims needed)
+command -v mise >/dev/null && eval "$(mise activate zsh)"
 
 # Starship prompt
 command -v starship >/dev/null && eval "$(starship init zsh)"

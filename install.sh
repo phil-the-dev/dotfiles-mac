@@ -85,7 +85,7 @@ confirmOS() {
 # Install everything for the detected platform
 installAll(){
   installAllSharedSetup;
-  installAllAsdf;
+  installAllMise;
   if [ "$DETECTED_OS" = "macos" ]; then
     installAllMacSetup;
   elif [ "$DETECTED_OS" = "linux" ]; then
@@ -106,9 +106,9 @@ mainMenu() {
   echo "What would you like to do?";
 
   if [ "$DETECTED_OS" = "macos" ]; then
-    options=("Shared Setup Menu" "macOS Setup Menu" "Homebrew Menu" "asdf Menu" "Install Everything" "Exit")
+    options=("Shared Setup Menu" "macOS Setup Menu" "Homebrew Menu" "mise Menu" "Install Everything" "Exit")
   else
-    options=("Shared Setup Menu" "Linux Setup Menu" "Package Manager Menu" "asdf Menu" "Install Everything" "Exit")
+    options=("Shared Setup Menu" "Linux Setup Menu" "Package Manager Menu" "mise Menu" "Install Everything" "Exit")
   fi
 
   select opt in "${options[@]}"
@@ -135,7 +135,7 @@ mainMenu() {
         break;
       ;;
       ${options[3]})
-        mainAsdf;
+        mainMise;
         break;
       ;;
       ${options[4]})
