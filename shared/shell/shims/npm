@@ -1,0 +1,20 @@
+#!/bin/sh
+# Route every `npm` call through aube, including from non-interactive scripts,
+# Makefiles and child_process spawns that an alias would never reach.
+# Use `rnpm` (see aliases.zsh) to reach the real npm.
+
+# mise resolves its config from the cwd, so outside $HOME (where ~/.tool-versions
+# stops applying) aube is not on PATH. Re-enter this shim with mise supplying it,
+# rather than falling back to the real npm, which would make `npm` mean different
+# things in different directories. The sentinel stops that from looping.
+if ! command -v aube >/dev/null 2>&1; then
+  if [ -n "$_AUBE_SHIM_RETRY" ]; then
+    echo "npm shim: aube unavailable (mise could not provide it); use rnpm for real npm" >&2
+    exit 127
+  fi
+  _AUBE_SHIM_RETRY=1
+  export _AUBE_SHIM_RETRY
+  exec mise exec aube -- "$0" "$@"
+fi
+
+exec aube "$@"

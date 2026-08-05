@@ -1,0 +1,34 @@
+#!/bin/sh
+# Route every `npx` call through aube, including from non-interactive scripts,
+# Makefiles and child_process spawns that an alias would never reach.
+# Use `rnpx` (see aliases.zsh) to reach the real npx.
+
+# mise resolves its config from the cwd, so outside $HOME (where ~/.tool-versions
+# stops applying) aube is not on PATH. Re-enter this shim with mise supplying it,
+# rather than falling back to the real npx, which would make `npx` mean different
+# things in different directories. The sentinel stops that from looping.
+if ! command -v aube >/dev/null 2>&1; then
+  if [ -n "$_AUBE_SHIM_RETRY" ]; then
+    echo "npx shim: aube unavailable (mise could not provide it); use rnpx for real npx" >&2
+    exit 127
+  fi
+  _AUBE_SHIM_RETRY=1
+  export _AUBE_SHIM_RETRY
+  exec mise exec aube -- "$0" "$@"
+fi
+
+# npx prefers a locally installed binary and only fetches when there isn't one.
+# aube splits those: `aube exec` runs a local binary, `aubx` (= `aube dlx`)
+# always fetches into a throwaway environment. So check for the local binary
+# first, or `npx tsc` in a repo that pins typescript would download a second copy
+# instead of using the pinned one. `aube bin` (rather than a literal
+# ./node_modules/.bin) so this still resolves from a workspace subdirectory.
+#
+# `--` because `aube exec` otherwise claims flags meant for the target binary
+# (`aube exec tsc --version` reports aube's own version). aubx needs no `--`: it
+# already passes target flags through, and `--` there would break its own flags.
+bin=$(aube bin 2>/dev/null)
+if [ -n "$1" ] && [ -n "$bin" ] && [ -x "$bin/$1" ]; then
+  exec aube exec -- "$@"
+fi
+exec aubx "$@"
