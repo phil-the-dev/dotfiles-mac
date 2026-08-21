@@ -11,6 +11,7 @@ These are my dotfiles to help me keep my development environment replicable when
 
 ```
 .zshrc                 # Slim entry point: loads OMZ + sources shared/shell/*.zsh
+AI_SYSTEM_PROMPT.md     # Global instructions shared by Claude Code and Codex
 
 shared/                # Cross-platform
   shell/               # Sourced from .zshrc in order:
@@ -23,7 +24,7 @@ shared/                # Cross-platform
     mise.toml          #   Global tool versions -> ~/.config/mise/config.toml
   utils/               # Logging and helper functions
   fonts/               # TTF fonts (JetBrains Mono, Meslo Powerline)
-  shell-setup.sh       # Zsh + starship + CLAUDE.md symlinks, OMZ, plugins
+  shell-setup.sh       # Zsh + starship + AI instruction symlinks, OMZ, plugins
 
 macos/                 # macOS-specific setup
   homebrew.sh          # Homebrew install and management
@@ -42,7 +43,7 @@ linux/                 # Linux-specific setup
 
 Scripts are organized into **Shared**, **Main**, and **Dev** groups:
 
-- **Shared** — cross-platform shell setup: .zshrc symlink, Oh My Zsh, zsh plugins, mise, CLAUDE.md symlink, repo directory creation.
+- **Shared** — cross-platform shell setup: .zshrc symlink, Oh My Zsh, zsh plugins, mise, Claude/Codex instruction symlinks, repo directory creation.
 - **Main** — daily-use apps (Firefox, Slack, Discord, Spotify, etc.)
 - **Dev** — development tools (Docker, VS Code, terminal emulators, fonts, etc.)
 

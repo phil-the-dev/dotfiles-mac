@@ -8,6 +8,5 @@ This repo manages Phil's dotfiles for macOS and Linux.
 - `linux/` — Linux-specific setup and packages
 - `install.sh` — interactive setup script
 
-## Global Coding Standards
-Symlinked to `~/.claude/CLAUDE.md` at install time.
-Source: [`shared/claude/CLAUDE.md`](shared/claude/CLAUDE.md)
+## Global AI Instructions
+`AI_SYSTEM_PROMPT.md` is symlinked to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` at install time.

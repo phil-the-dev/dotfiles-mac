@@ -1,9 +1,9 @@
 # Claude Config
 
-These files are symlinked into `~/.claude/` by `install.sh`.
+Claude configuration is symlinked into `~/.claude/` by `install.sh`.
 
 ## CLAUDE.md
-Global coding standards applied to every Claude Code session.
+`AI_SYSTEM_PROMPT.md` at the repository root is symlinked to `~/.claude/CLAUDE.md` and applied to every Claude Code session. The same file is symlinked to `~/.codex/AGENTS.md` for Codex.
 
 ## settings.json
 Claude Code settings including MCP server definitions. Add servers under `mcpServers`:

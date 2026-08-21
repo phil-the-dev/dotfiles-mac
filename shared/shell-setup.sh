@@ -9,10 +9,17 @@ createZshLink(){
 createClaudeLink() {
   info "Linking up Claude config"
   mkdir -p "$HOME/.claude"
-  rm -rf "$HOME/.claude/CLAUDE.md"
-  ln -s "$HOME/.dotfiles/shared/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+  rm -f "$HOME/.claude/CLAUDE.md"
+  ln -s "$HOME/.dotfiles/AI_SYSTEM_PROMPT.md" "$HOME/.claude/CLAUDE.md"
   rm -rf "$HOME/.claude/settings.json"
   ln -s "$HOME/.dotfiles/shared/claude/settings.json" "$HOME/.claude/settings.json"
+}
+
+createCodexLink() {
+  info "Linking up Codex config"
+  mkdir -p "$HOME/.codex"
+  rm -f "$HOME/.codex/AGENTS.md"
+  ln -s "$HOME/.dotfiles/AI_SYSTEM_PROMPT.md" "$HOME/.codex/AGENTS.md"
 }
 
 createStarshipLink() {
@@ -87,6 +94,7 @@ installAllMise() {
 installAllSharedSetup() {
   createZshLink;
   createClaudeLink;
+  createCodexLink;
   createStarshipLink;
   createRepoDirectory;
   installOhMyZsh;
@@ -130,7 +138,7 @@ mainMise() {
 mainMenuShared() {
   echo "Shared Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything (shared)" "Create .zshrc symlink" "Link Claude config" "Link starship config" "Create Repo Directory" "Install Oh My Zsh" "Install Zsh Plugins" "Return to main menu")
+  options=("Install Everything (shared)" "Create .zshrc symlink" "Link Claude config" "Link Codex config" "Link starship config" "Create Repo Directory" "Install Oh My Zsh" "Install Zsh Plugins" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in
@@ -144,18 +152,21 @@ mainMenuShared() {
         createClaudeLink;
       ;;
       ${options[3]})
-        createStarshipLink;
+        createCodexLink;
       ;;
       ${options[4]})
-        createRepoDirectory;
+        createStarshipLink;
       ;;
       ${options[5]})
-        installOhMyZsh;
+        createRepoDirectory;
       ;;
       ${options[6]})
-        installZshPlugins;
+        installOhMyZsh;
       ;;
       ${options[7]})
+        installZshPlugins;
+      ;;
+      ${options[8]})
         echo "Returning to main menu...";
         break 2;
       ;;
