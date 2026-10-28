@@ -1,5 +1,25 @@
 # mise (version manager — manages PATH itself, no shims needed)
-command -v mise >/dev/null && eval "$(mise activate zsh)"
+# Each mise exec costs ~0.3s here, so `mise activate zsh` is cached and rebuilt
+# when the mise binary changes. The output embeds a PATH snapshot, so it is
+# generated with a placeholder PATH that is swapped back to a live $PATH. Nested
+# shells inherit mise state that only live activate output cleans up, so they
+# skip the cache.
+if (( $+commands[mise] )); then
+  _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-activate.zsh"
+  if [[ -n "$__MISE_ORIG_PATH" ]]; then
+    eval "$(mise activate zsh)"
+  else
+    if [[ ! -s "$_mise_cache" || "$commands[mise]" -nt "$_mise_cache" ]]; then
+      mkdir -p "${_mise_cache:h}"
+      _mise_bindir="${commands[mise]:h}"
+      env -i HOME="$HOME" PATH="@@PATH@@:$_mise_bindir" "$commands[mise]" activate zsh \
+        | sed "s|'\([^']*\)@@PATH@@:$_mise_bindir'|\"\1\$PATH\"|" >| "$_mise_cache"
+      unset _mise_bindir
+    fi
+    source "$_mise_cache"
+  fi
+  unset _mise_cache
+fi
 
 # Starship prompt
 command -v starship >/dev/null && eval "$(starship init zsh)"
