@@ -108,9 +108,6 @@ installDevPackages() {
         ;;
     esac
   fi
-
-  # Warp terminal
-  info "Warp terminal: install from https://www.warp.dev/ if desired."
 }
 
 installAllLinuxPackages() {

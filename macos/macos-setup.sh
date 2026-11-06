@@ -25,6 +25,16 @@ installFontsMac(){
   cp "$HOME/.dotfiles/shared/fonts/Meslo LG S DZ Regular for Powerline.ttf" "$HOME/Library/Fonts"
 }
 
+installColimaPruneAgent(){
+  info "Installing colima prune launchd agent (weekly)...";
+  local label="com.dotfiles.colima-prune"
+  local target="$HOME/Library/LaunchAgents/$label.plist"
+  mkdir -p "$HOME/Library/LaunchAgents"
+  sed "s|__HOME__|$HOME|g" "$HOME/.dotfiles/macos/launchd/colima-prune.plist" > "$target"
+  launchctl bootout "gui/$(id -u)/$label" 2>/dev/null
+  launchctl bootstrap "gui/$(id -u)" "$target"
+}
+
 installMainBrewDeps() {
   installBrewDeps "./macos/main/Brewfile";
 }
@@ -38,12 +48,13 @@ installAllMacSetup() {
   copyFinickyConfig;
   setupCodeAliasMac;
   installFontsMac;
+  installColimaPruneAgent;
 }
 
 mainMenuMac() {
   echo "macOS Setup Menu";
   echo "What would you like to do?";
-  options=("Install Everything (macOS)" "Homebrew Menu" "Copy Finicky Config" "Setup code alias" "Install Fonts" "Return to main menu")
+  options=("Install Everything (macOS)" "Homebrew Menu" "Copy Finicky Config" "Setup code alias" "Install Fonts" "Install colima prune agent" "Return to main menu")
   select opt in "${options[@]}"
   do
     case $opt in
@@ -64,6 +75,9 @@ mainMenuMac() {
         installFontsMac;
       ;;
       ${options[5]})
+        installColimaPruneAgent;
+      ;;
+      ${options[6]})
         echo "Returning to main menu...";
         break 2;
       ;;
