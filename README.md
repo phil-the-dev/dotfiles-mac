@@ -83,7 +83,6 @@ The script will detect your OS (with a chance to override) and present a menu fo
 - hub: GitHub CLI
 - docker: Docker Desktop for Mac
 - fork: Git GUI for reverting, cherry-picking, history
-- warp: Modern terminal with AI features
 - figma: Design tool
 - iterm2: Terminal emulator
 - raycast: Spotlight/Alfred replacement
